@@ -1,0 +1,39 @@
+<div class="container">
+  <header>
+    <h1>🛒 {{ title }}</h1>
+    <div class="cart-icon">
+      Sepet: {{ cart.length }} ürün
+    </div>
+  </header>
+
+  <main>
+    <section class="products">
+      <h2>Ürünler</h2>
+      <div class="product-grid">
+        <div class="product-card" *ngFor="let product of products">
+          <div class="product-image">{{ product.image }}</div>
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <div class="product-footer">
+            <span class="price">{{ product.price }} ₺</span>
+            <button (click)="addToCart(product)">Sepete Ekle</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cart" *ngIf="cart.length > 0">
+      <h2>Alışveriş Sepetim</h2>
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cart; let i = index">
+          <span>{{ item.image }} {{ item.name }}</span>
+          <span>{{ item.price }} ₺</span>
+          <button (click)="removeFromCart(i)" class="remove-btn">Sil</button>
+        </div>
+      </div>
+      <div class="cart-total">
+        <strong>Toplam: {{ getTotalPrice() }} ₺</strong>
+      </div>
+    </section>
+  </main>
+</div>

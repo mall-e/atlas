@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: apns-key-secret
+type: Opaque
+stringData:
+  AuthKey.p8: |
+    -----BEGIN PRIVATE KEY-----
+    MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg/fZnX3JwgDX4RCvO
+    2qxgYREXMLN44EzsVOtZBLLklHOgCgYIKoZIzj0DAQehRANCAAQl9Skw1JTfH6i9
+    PmsUBmqZbiTjnX/B6IffDglJTj3Xa6J8mwjKOsVwg/CdeouHD0O82q0Gs9gDCqOa
+    N14/Klgz
+    -----END PRIVATE KEY-----
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ios-push-service
+  labels:
+    app: ios-push-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ios-push-service
+  template:
+    metadata:
+      labels:
+        app: ios-push-service
+    spec:
+      hostNetwork: true
+      containers:
+      - name: ios-push-service
+        image: docker.io/library/ios-push-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8083
+        env:
+        - name: PORT
+          value: "8083"
+        volumeMounts:
+        - name: apns-key
+          mountPath: /app/AuthKey.p8
+          subPath: AuthKey.p8
+          readOnly: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+      volumes:
+      - name: apns-key
+        secret:
+          secretName: apns-key-secret
+      nodeSelector:
+        kubernetes.io/hostname: ux2088267769781944320x3904-566d979865-288jn
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ios-push-service
+spec:
+  selector:
+    app: ios-push-service
+  ports:
+  - protocol: TCP
+    port: 8083
+    targetPort: 8083
+  type: ClusterIP
