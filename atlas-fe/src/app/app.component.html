@@ -35,5 +35,57 @@
         <strong>Toplam: {{ getTotalPrice() }} ₺</strong>
       </div>
     </section>
+
+    <!-- Push Notification Gönderme Bölümü -->
+<div class="notification-section">
+  <h2>📱 Push Bildirim Gönder</h2>
+
+  <div class="notification-form">
+    <div class="form-group">
+      <label for="deviceToken">Device Token:</label>
+      <input
+        type="text"
+        id="deviceToken"
+        [(ngModel)]="deviceToken"
+        placeholder="iOS Device Token giriniz"
+        class="form-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="title">Bildirim Başlığı:</label>
+      <input
+        type="text"
+        id="title"
+        [(ngModel)]="notificationTitle"
+        placeholder="Örn: Yeni Kampanya"
+        class="form-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="body">Bildirim İçeriği:</label>
+      <textarea
+        id="body"
+        [(ngModel)]="notificationBody"
+        placeholder="Örn: %50 indirim fırsatını kaçırmayın!"
+        rows="3"
+        class="form-input"
+      ></textarea>
+    </div>
+
+    <button
+      (click)="sendPushNotification()"
+      [disabled]="isSendingNotification"
+      class="send-btn"
+    >
+      {{ isSendingNotification ? '⏳ Gönderiliyor...' : '📤 Bildirim Gönder' }}
+    </button>
+
+    <div *ngIf="notificationMessage" [class]="notificationMessage.includes('✅') ? 'success-message' : 'error-message'">
+      {{ notificationMessage }}
+    </div>
+  </div>
+</div>
   </main>
 </div>

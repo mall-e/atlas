@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: push-notification-service
+  labels:
+    app: push-notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: push-notification
+  template:
+    metadata:
+      labels:
+        app: push-notification
+    spec:
+      containers:
+      - name: push-notification
+        image: docker.io/library/push-notification:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8083
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "8083"
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8083
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8083
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: apn-key
+          mountPath: /app/AuthKey.p8
+          subPath: AuthKey.p8
+          readOnly: true
+      volumes:
+      - name: apn-key
+        secret:
+          secretName: apn-auth-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: push-notification-service
+  labels:
+    app: push-notification
+spec:
+  type: NodePort
+  selector:
+    app: push-notification
+  ports:
+  - port: 8083
+    targetPort: 8083
+    nodePort: 30084
+    protocol: TCP
+    name: http
