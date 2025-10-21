@@ -1,0 +1,79 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Kayıt Ol</h2>
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <!-- Username input -->
+      <div class="form-group">
+        <label for="username">Kullanıcı Adı</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          required
+          placeholder="Kullanıcı adınızı girin"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Password input -->
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          minlength="6"
+          placeholder="Şifrenizi girin (en az 6 karakter)"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Confirm Password input -->
+      <div class="form-group">
+        <label for="confirmPassword">Şifre Tekrar</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          required
+          placeholder="Şifrenizi tekrar girin"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Turnstile widget -->
+      <div class="turnstile-container">
+        <ngx-turnstile
+          [siteKey]="siteKey"
+          (resolved)="onTurnstileResolved($event)"
+          (errored)="onTurnstileError()"
+        ></ngx-turnstile>
+      </div>
+
+      <!-- Error message -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Submit button -->
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="isLoading || !registerForm.valid"
+      >
+        <span *ngIf="!isLoading">Kayıt Ol</span>
+        <span *ngIf="isLoading">Kayıt yapılıyor...</span>
+      </button>
+    </form>
+
+    <!-- Login link -->
+    <div class="footer-links">
+      <p>Zaten hesabınız var mı? <a routerLink="/login">Giriş Yap</a></p>
+    </div>
+  </div>
+</div>

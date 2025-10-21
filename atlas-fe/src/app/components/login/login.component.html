@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Giriş Yap</h2>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">E-posta</label>
+        <input
+          type="username"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="username"
+          required
+          autocomplete="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          required
+          autocomplete="current-password"
+        />
+      </div>
+
+      <!-- Cloudflare Turnstile Widget -->
+      <div class="turnstile-wrapper">
+        <ngx-turnstile
+          [siteKey]="siteKey"
+          (resolved)="onTurnstileResolved($event)"
+          (errored)="onTurnstileError()"
+        ></ngx-turnstile>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="login-button"
+        [disabled]="isLoading || !turnstileToken"
+      >
+        <span *ngIf="!isLoading">Giriş Yap</span>
+        <span *ngIf="isLoading">Giriş yapılıyor...</span>
+      </button>
+    </form>
+
+    <div class="register-link">
+      Hesabınız yok mu?
+      <a routerLink="/register">Kayıt Ol</a>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 interface Product {
   id: number;
@@ -22,7 +24,7 @@ interface PushNotificationRequest {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -46,7 +48,10 @@ export class AppComponent {
     { id: 6, name: 'Kamera', price: 12000, image: '📷', description: 'Profesyonel kamera' }
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    public authService: AuthService
+  ) {}
 
   addToCart(product: Product) {
     this.cart.push(product);
