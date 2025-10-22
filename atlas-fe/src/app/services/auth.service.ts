@@ -40,7 +40,7 @@ export interface CurrentUser {
 })
 export class AuthService {
   // Auth service URL'i - Kubernetes service adını kullan
-  private apiUrl = 'http://authservice/'; // Ya da 'http://authservice.default.svc.cluster.local'
+  private apiUrl = '/api/';
   private currentUser: CurrentUser | null = null;
 
   constructor(private http: HttpClient) {}
