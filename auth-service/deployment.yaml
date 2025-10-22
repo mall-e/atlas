@@ -15,7 +15,7 @@ spec:
       containers:
       - name: authservice
         image: authservice:latest
-        imagePullPolicy: IfNotPresent  # Local image kullan
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
 ---
