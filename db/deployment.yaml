@@ -32,7 +32,7 @@ spec:
         - name: COUCHDB_USER
           value: "admin"
         - name: COUCHDB_PASSWORD
-          value: "password123"  # Bunu değiştir!
+          value: "password123"
         volumeMounts:
         - name: couchdb-storage
           mountPath: /opt/couchdb/data

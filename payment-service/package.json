@@ -1,0 +1,16 @@
+{
+  "name": "payment-service",
+  "version": "1.0.0",
+  "description": "E-commerce Payment Service with Kafka",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
